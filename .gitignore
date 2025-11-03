@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+.env
+venv/
+.env/
+.env.local
+
+# VS Code
+.vscode/
+
+# Virtual environment folders
+.env/
+.venv/
+env/
+ENV/
+
+# Mac / Windows system files
+.DS_Store
+Thumbs.db
+
+# Logs and caches
+*.log
+*.sqlite3
+*.db
+.cache/
+.pytest_cache/
+coverage/
+
+# Build and distribution
+build/
+dist/
+*.egg
+*.egg-info/
+
+# Vercel / Deployment
+.vercel/
