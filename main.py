@@ -79,7 +79,4 @@ def mock_topic():
 # ----------------------------
 from fastapi.responses import FileResponse
 
-@app.get("/favicon.ico")
-def favicon():
-    # Serve a blank icon or include your favicon.ico in project root
-    return FileResponse("favicon.ico")  # or just return an empty 204 if not available
+  # or just return an empty 204 if not available
