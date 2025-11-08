@@ -1,15 +1,19 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from chatbot import create_client, detect_topic
 from dotenv import load_dotenv
 import os
+import traceback
 
+# Load env variables
 load_dotenv()
 
 app = FastAPI(title="Topic-Detection Chatbot API")
 
-# Allow requests from frontend
+# ----------------------------
+# CORS setup
+# ----------------------------
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
 app.add_middleware(
     CORSMiddleware,
@@ -33,24 +37,49 @@ class TopicResponse(BaseModel):
 # ----------------------------
 # Main route
 # ----------------------------
-@app.post("/detect_topic", response_model=TopicResponse)               
+@app.post("/detect_topic", response_model=TopicResponse)
 def detect_topic_route(req: TopicRequest):
     try:
+        if not req.api_key:
+            raise HTTPException(status_code=400, detail="API key is required")
+        if not req.question:
+            raise HTTPException(status_code=400, detail="Question is required")
+
+        # Create client safely inside route
         client = create_client(req.api_key)
         category = detect_topic(req.question, client)
+
         return TopicResponse(category=category)
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # Log full traceback for debugging
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "error": "Failed to detect topic",
+                "exception": str(e)
+            }
+        )
 
 # ----------------------------
-# ✅ Test routes
+# Test / health routes
 # ----------------------------
 @app.get("/")
 def root():
     return {"message": "FastAPI backend is live!"}
 
-
 @app.get("/mock_topic")
 def mock_topic():
-    # Simple test without API key
-    return {"mock": "This is mock category"}
+    # Simple test without Gemini API
+    return {"mock": "This is a mock category"}
+
+# ----------------------------
+# Favicon route to avoid 500 logs
+# ----------------------------
+from fastapi.responses import FileResponse
+
+@app.get("/favicon.ico")
+def favicon():
+    # Serve a blank icon or include your favicon.ico in project root
+    return FileResponse("favicon.ico")  # or just return an empty 204 if not available
