@@ -78,20 +78,20 @@ def create_client(user_api_key):
         model="gemini-2.0-flash",
         google_api_key=user_api_key,
         streaming=False
-    )
+    )  
 
 # ------------------------------
 # Example usage (for testing)
 # ------------------------------
-if __name__ == "__main__":
-    api_key = input("Enter your Gemini API key: ")
-    client = create_client(api_key)
+#if __name__ == "__main__":
+ #   api_key = input("Enter your Gemini API key: ")
+  #  client = create_client(api_key)
 
-    print("\n=== Topic Detection Test ===")
-    while True:
-        question = input("\nEnter a student question (or type 'exit'): ")
-        if question.lower() in ["exit", "quit"]:
-            break
-
-        category = detect_topic(question, client)
-        print(f"Question belongs to category -> {category}")
+ #   print("\n=== Topic Detection Test ===")
+  #  while True:
+   #     question = input("\nEnter a student question (or type 'exit'): ")
+    #    if question.lower() in ["exit", "quit"]:
+     #       break
+#
+ #       category = detect_topic(question, client)
+  #      print(f"Question belongs to category -> {category}")

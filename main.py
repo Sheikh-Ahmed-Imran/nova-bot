@@ -77,6 +77,5 @@ def mock_topic():
 # ----------------------------
 # Favicon route to avoid 500 logs
 # ----------------------------
-from fastapi.responses import FileResponse
 
   # or just return an empty 204 if not available
