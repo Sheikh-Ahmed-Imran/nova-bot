@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException, Request
+# main.py
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from chatbot import create_client, detect_topic
@@ -6,7 +7,7 @@ from dotenv import load_dotenv
 import os
 import traceback
 
-# Load env variables
+# Load environment variables
 load_dotenv()
 
 app = FastAPI(title="Topic-Detection Chatbot API")
@@ -63,19 +64,15 @@ def detect_topic_route(req: TopicRequest):
         )
 
 # ----------------------------
-# Test / health routes
+# Health check route
 # ----------------------------
 @app.get("/")
 def root():
     return {"message": "FastAPI backend is live!"}
 
+# ----------------------------
+# Optional mock route for testing
+# ----------------------------
 @app.get("/mock_topic")
 def mock_topic():
-    # Simple test without Gemini API
     return {"mock": "This is a mock category"}
-
-# ----------------------------
-# Favicon route to avoid 500 logs
-# ----------------------------
-
-  # or just return an empty 204 if not available
